@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.UserMapper">
+        <!-- 选择所有用户 -->
+        <select id="findAll" resultType="com.example.springboot.entity.User"> select * from `user` </select>
+
+        <!-- 新增用户 -->
+        <insert id="addUser" parameterType="com.example.springboot.entity.User"> INSERT INTO `user`
+                (id,name, username, password, role) VALUES (#{id} ,#{name}, #{username},
+                #{password}, #{role}) </insert>
+
+
+        <!-- 根据ID删除用户 -->
+        <delete id="deleteById" parameterType="java.lang.Long"> DELETE FROM user WHERE id=#{id} </delete>
+
+        <!-- 根据ID更新用户 -->
+        <update id="updataById" parameterType="com.example.springboot.entity.User"> UPDATE user SET
+                name=#{name}, username=#{username}, password=#{password}, role=#{role} WHERE
+                id=#{id} </update>
+
+        <!-- 统计 -->
+        <select id="count" resultType="java.lang.Integer"> SELECT COUNT(id) FROM user </select>
+
+
+        <!-- 分页查询 -->
+        <select id="findByPage" resultType="com.example.springboot.entity.User"> SELECT * FROM user
+                LIMIT #{offset},#{pageSize} </select>
+
+        <!-- 根据用户名查询用户 -->
+        <select id="selectByUsername" resultType="com.example.springboot.entity.User"> select * from `user`
+                where username = #{username} </select>
+</mapper>

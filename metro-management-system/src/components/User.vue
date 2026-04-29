@@ -129,7 +129,7 @@ onMounted(() => {
 <style scoped>
 .user-container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -210,5 +210,12 @@ onMounted(() => {
     padding: 20px;
     overflow-y: auto;
     flex: 1;
+    position: relative;
+}
+
+/* 确保 router-view 占满内容区域 */
+.content :deep(.router-view-container),
+.content > * {
+    height: 100%;
 }
 </style>

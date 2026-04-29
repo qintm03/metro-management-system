@@ -37,9 +37,9 @@ import router from '../router.js'
 
 
 const form = reactive({
-  username: 'admin',
+  username: 'qtm',
   password: '123456',
-  role: '管理员',
+  role: '普通用户',
   rules: {
     username: [
       { required: true, message: '请输入账号', trigger: 'blur' },
@@ -91,7 +91,7 @@ const login = () => {
 
 <style scoped>
 .login-container {
-  height: 120vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;

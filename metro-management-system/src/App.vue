@@ -15,4 +15,7 @@
  </script>
 
 <style scoped>
+.view, .navi {
+  height: 100%;
+}
 </style>

@@ -141,7 +141,7 @@ onMounted(() => {
 <style scoped>
 .manager-container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -221,6 +221,7 @@ onMounted(() => {
     background-color: #f0f2f5;
     padding: 20px;
     overflow-y: auto;
+   overflow: hidden;
     flex: 1;
 }
 </style>

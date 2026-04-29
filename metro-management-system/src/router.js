@@ -1,7 +1,7 @@
 import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 
 
-import TripService from './components/TripService.vue'
+import TripService from './components/user/TripService.vue'
 import Login from './components/Login.vue'
 import User from './components/User.vue'
 import Manager from './components/Manager.vue'

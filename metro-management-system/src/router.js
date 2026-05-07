@@ -12,9 +12,12 @@ import MapManagement from './components/admin/MapManagement.vue'
 import AdminTicketManagement from './components/admin/AdminTicketManagement.vue'
 import AdminTrackManagement from './components/admin/AdminTrackManagement.vue'
 import UserManagement from './components/admin/UserManagement.vue'
-import UserHomePage from './components/user/UserHomePage.vue'
 import UserTicketManagement from './components/user/UserTicketManagement.vue'
 import UserTrackManagement from './components/user/UserTrackManagement.vue'
+import UserHomePage from './components/user/UserHomePage.vue'
+import RealTimeTrack from './components/user/RealTimeTrack.vue'
+import StationServices from './components/user/StationServices.vue'
+
 
 
 
@@ -44,6 +47,8 @@ const routes = [
       { path: 'TripService', component: TripService },
       { path: 'UserTicketManagement', component: UserTicketManagement },
       { path: 'UserTrackManagement', component: UserTrackManagement },
+      { path: 'RealTimeTrack', component: RealTimeTrack },
+      { path: 'StationServices', component: StationServices },
     ]
   }
 ]

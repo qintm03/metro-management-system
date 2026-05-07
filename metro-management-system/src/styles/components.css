@@ -1,0 +1,553 @@
+/* ============================================
+   地铁管理系统 - 组件样式 (Components)
+   基于设计系统的组件样式类
+   ============================================ */
+
+/* ============================================
+   按钮样式 (Buttons)
+   ============================================ */
+
+/* 主按钮 - 渐变背景 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: white;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 137, 230, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 次要按钮 */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--primary-500);
+  background: white;
+  border: 1px solid var(--primary-500);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-secondary:hover {
+  background: var(--primary-50);
+  transform: translateY(-1px);
+}
+
+/* 危险按钮 */
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: white;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 幽灵按钮 */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-dark);
+}
+
+/* 按钮尺寸 */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: var(--text-small);
+}
+
+.btn-lg {
+  padding: 14px 28px;
+  font-size: var(--text-large);
+}
+
+/* ============================================
+   卡片样式 (Cards)
+   ============================================ */
+
+/* 基础卡片 */
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* 悬停上浮卡片 */
+.card-hover {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* 渐变背景卡片 */
+.card-gradient {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+
+.card-gradient:hover {
+  border-color: var(--primary-200);
+  box-shadow: var(--shadow-md);
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-header h3 {
+  font-size: var(--text-h4);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* 卡片内容 */
+.card-body {
+  color: var(--text-secondary);
+}
+
+/* 卡片底部 */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+}
+
+/* ============================================
+   表格样式 (Tables)
+   ============================================ */
+
+/* 表格容器 */
+.table-container {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* 表格头部 */
+.table-header {
+  background: var(--bg-secondary);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.table-header h3 {
+  font-size: var(--text-h4);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* 表格操作栏 */
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  background: white;
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* 表格行悬停 */
+.table-row-hover:hover {
+  background: var(--primary-50);
+}
+
+/* ============================================
+   表单样式 (Forms)
+   ============================================ */
+
+/* 表单项 */
+.form-item {
+  margin-bottom: var(--space-5);
+}
+
+/* 表单标签 */
+.form-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.form-label.required::after {
+  content: ' *';
+  color: var(--danger);
+}
+
+/* 表单输入框 */
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: white;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.form-input:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.form-input:disabled {
+  background: var(--bg-secondary);
+  cursor: not-allowed;
+}
+
+/* 表单帮助文本 */
+.form-help {
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--text-tertiary);
+}
+
+/* 表单错误文本 */
+.form-error {
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--danger);
+}
+
+/* ============================================
+   搜索栏样式 (Search Bar)
+   ============================================ */
+
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-end;
+  padding: var(--space-4);
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-bar .form-item {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   统计卡片样式 (Stats Cards)
+   ============================================ */
+
+.stats-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: all var(--transition-base);
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stats-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.stats-icon.primary {
+  background: var(--primary-50);
+  color: var(--primary-500);
+}
+
+.stats-icon.success {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.stats-icon.warning {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.stats-icon.danger {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.stats-content {
+  flex: 1;
+}
+
+.stats-value {
+  font-size: var(--text-h2);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stats-label {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* ============================================
+   标签样式 (Tags)
+   ============================================ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: var(--text-small);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-full);
+}
+
+.tag-primary {
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+.tag-success {
+  background: var(--success-light);
+  color: var(--success-dark);
+}
+
+.tag-warning {
+  background: var(--warning-light);
+  color: var(--warning-dark);
+}
+
+.tag-danger {
+  background: var(--danger-light);
+  color: var(--danger-dark);
+}
+
+.tag-info {
+  background: var(--info-light);
+  color: var(--info-dark);
+}
+
+/* ============================================
+   徽章样式 (Badges)
+   ============================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: var(--font-semibold);
+  color: white;
+  background: var(--danger);
+  border-radius: var(--radius-full);
+}
+
+/* ============================================
+   分割线样式 (Dividers)
+   ============================================ */
+
+.divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: var(--space-4) 0;
+}
+
+.divider-vertical {
+  width: 1px;
+  height: 100%;
+  background: var(--border-light);
+  margin: 0 var(--space-4);
+}
+
+/* ============================================
+   空状态样式 (Empty State)
+   ============================================ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16);
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 64px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.empty-title {
+  font-size: var(--text-h4);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.empty-description {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+/* ============================================
+   加载状态样式 (Loading State)
+   ============================================ */
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--primary-500);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   页面标题样式 (Page Header)
+   ============================================ */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.page-title {
+  font-size: var(--text-h2);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+.page-actions {
+  display: flex;
+  gap: var(--space-3);
+}

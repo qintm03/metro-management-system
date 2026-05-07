@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.ChecixianluMapper">
+
+    <!-- 查询所有车次线路 -->
+    <select id="findAll" resultType="com.example.springboot.entity.Checixianlu">
+        SELECT * FROM checixianlu ORDER BY addtime DESC
+    </select>
+
+    <!-- 根据ID查询车次线路 -->
+    <select id="findById" resultType="com.example.springboot.entity.Checixianlu">
+        SELECT * FROM checixianlu WHERE id = #{id}
+    </select>
+
+    <!-- 新增车次线路 -->
+    <insert id="insert" parameterType="com.example.springboot.entity.Checixianlu" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO checixianlu
+        (xianlumingcheng, luxiantupian, xianlufenlei, shifazhandian, zhongdianzhandian,
+         tujingzhandian, checi, huanchengxinxi, yunxingshijian, luxianxiangqing,
+         gengxinshijian, feiyongshuoming, huanchengfangan, clicknum)
+        VALUES
+        (#{xianlumingcheng}, #{luxiantupian}, #{xianlufenlei}, #{shifazhandian}, #{zhongdianzhandian},
+         #{tujingzhandian}, #{checi}, #{huanchengxinxi}, #{yunxingshijian}, #{luxianxiangqing},
+         #{gengxinshijian}, #{feiyongshuoming}, #{huanchengfangan}, #{clicknum})
+    </insert>
+
+    <!-- 根据ID更新车次线路 -->
+    <update id="updateById" parameterType="com.example.springboot.entity.Checixianlu">
+        UPDATE checixianlu
+        SET xianlumingcheng = #{xianlumingcheng},
+            luxiantupian = #{luxiantupian},
+            xianlufenlei = #{xianlufenlei},
+            shifazhandian = #{shifazhandian},
+            zhongdianzhandian = #{zhongdianzhandian},
+            tujingzhandian = #{tujingzhandian},
+            checi = #{checi},
+            huanchengxinxi = #{huanchengxinxi},
+            yunxingshijian = #{yunxingshijian},
+            luxianxiangqing = #{luxianxiangqing},
+            gengxinshijian = #{gengxinshijian},
+            feiyongshuoming = #{feiyongshuoming},
+            huanchengfangan = #{huanchengfangan},
+            clicknum = #{clicknum}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除车次线路 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM checixianlu WHERE id = #{id}
+    </delete>
+
+    <!-- 分页查询 -->
+    <select id="findByPage" resultType="com.example.springboot.entity.Checixianlu">
+        SELECT * FROM checixianlu ORDER BY addtime DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM checixianlu
+    </select>
+
+</mapper>

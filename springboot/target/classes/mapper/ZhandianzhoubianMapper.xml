@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.ZhandianzhoubianMapper">
+
+    <!-- 查询所有站点周边 -->
+    <select id="findAll" resultType="com.example.springboot.entity.Zhandianzhoubian">
+        SELECT * FROM zhandianzhoubian ORDER BY addtime DESC
+    </select>
+
+    <!-- 根据ID查询站点周边 -->
+    <select id="findById" resultType="com.example.springboot.entity.Zhandianzhoubian">
+        SELECT * FROM zhandianzhoubian WHERE id = #{id}
+    </select>
+
+    <!-- 新增站点周边 -->
+    <insert id="insert" parameterType="com.example.springboot.entity.Zhandianzhoubian" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO zhandianzhoubian
+        (zhandianmingcheng, tupian, daolumingcheng, xiangxidizhi, zhoubiangongjiao, zhoubianqingkuang, gengxinshijian)
+        VALUES
+        (#{zhandianmingcheng}, #{tupian}, #{daolumingcheng}, #{xiangxidizhi}, #{zhoubiangongjiao}, #{zhoubianqingkuang}, #{gengxinshijian})
+    </insert>
+
+    <!-- 根据ID更新站点周边 -->
+    <update id="updateById" parameterType="com.example.springboot.entity.Zhandianzhoubian">
+        UPDATE zhandianzhoubian
+        SET zhandianmingcheng = #{zhandianmingcheng},
+            tupian = #{tupian},
+            daolumingcheng = #{daolumingcheng},
+            xiangxidizhi = #{xiangxidizhi},
+            zhoubiangongjiao = #{zhoubiangongjiao},
+            zhoubianqingkuang = #{zhoubianqingkuang},
+            gengxinshijian = #{gengxinshijian}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除站点周边 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM zhandianzhoubian WHERE id = #{id}
+    </delete>
+
+    <!-- 分页查询 -->
+    <select id="findByPage" resultType="com.example.springboot.entity.Zhandianzhoubian">
+        SELECT * FROM zhandianzhoubian ORDER BY addtime DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM zhandianzhoubian
+    </select>
+
+</mapper>

@@ -1,12 +1,18 @@
 <template>
     <div class="user-container">
         <!-- 左侧菜单栏 -->
-        <el-aside width="200px" class="sidebar">
+        <el-aside width="220px" class="sidebar">
             <div class="logo-container">
-                <h2>地铁管理系统</h2>
+                <div class="logo-icon">
+                    <el-icon size="28"><Van /></el-icon>
+                </div>
+                <div class="logo-text">
+                    <h2>地铁管理系统</h2>
+                    <span>Metro Service</span>
+                </div>
             </div>
-            <el-menu :default-active="activeMenu" class="el-menu-vertical" background-color="#304156"
-                text-color="#bfcbd9" active-text-color="#409EFF" router>
+            <el-menu :default-active="activeMenu" class="el-menu-vertical" background-color="transparent"
+                text-color="rgba(255, 255, 255, 0.7)" active-text-color="#ffffff" router>
                 <el-menu-item index="/user/UserHomePage">
                     <el-icon>
                         <HomeFilled />
@@ -19,18 +25,26 @@
                     </el-icon>
                     <span>出行服务</span>
                 </el-menu-item>
-                <el-menu-item index="/user/UserTicketManagement">
+                <el-menu-item index="/user/StationServices">
                     <el-icon>
                         <Ticket />
                     </el-icon>
-                    <span>我的票务</span>
+                    <span>周边服务</span>
                 </el-menu-item>
-                <el-menu-item index="/user/UserTrackManagement">
+                <el-menu-item index="/user/RealTimeTrack">
                     <el-icon>
                         <Location />
                     </el-icon>
-                    <span>我的轨迹</span>
+                    <span>实时轨迹</span>
                 </el-menu-item>
+                  <el-menu-item index="/user/UserTrackManagement">
+                    <el-icon>
+                        <Location />
+                    </el-icon>
+                    <span>热力分析</span>
+                </el-menu-item>
+                 
+                
             </el-menu>
         </el-aside>
 
@@ -39,21 +53,28 @@
             <!-- 顶部导航栏 -->
             <el-header class="header">
                 <div class="header-left">
-                    <span class="welcome-text">欢迎您，普通用户</span>
+                    <span class="welcome-text">欢迎您，{{ currentUser.username || '用户' }}</span>
                 </div>
                 <div class="header-right">
-                    <el-dropdown @command="handleCommand">
+                    <el-dropdown @command="handleCommand" class="user-dropdown">
                         <span class="el-dropdown-link">
-                            <el-icon>
-                                <Avatar />
-                            </el-icon>
-                            <span>{{ currentUser.username }}</span>
+                            <el-avatar :size="36" class="user-avatar">
+                                <el-icon><Avatar /></el-icon>
+                            </el-avatar>
+                            <span class="username">{{ currentUser.username || '用户' }}</span>
                             <el-icon class="el-icon--right"><arrow-down /></el-icon>
                         </span>
                         <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item command="profile">个人信息</el-dropdown-item>
-                                <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                            <el-dropdown-menu class="user-dropdown-menu">
+                                <el-dropdown-item command="profile">
+                                    <el-icon><User /></el-icon>个人信息
+                                </el-dropdown-item>
+                                <el-dropdown-item command="settings">
+                                    <el-icon><Setting /></el-icon>设置
+                                </el-dropdown-item>
+                                <el-dropdown-item divided command="logout">
+                                    <el-icon><SwitchButton /></el-icon>退出登录
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -62,7 +83,11 @@
 
             <!-- 内容区域 -->
             <el-main class="content">
-                <router-view></router-view>
+                <router-view v-slot="{ Component }">
+                    <transition name="page" mode="out-in">
+                        <component :is="Component" />
+                    </transition>
+                </router-view>
             </el-main>
         </el-container>
     </div>
@@ -78,7 +103,11 @@ import {
     Location,
     Guide,
     ArrowDown,
-    Avatar
+    Avatar,
+    Van,
+    User,
+    Setting,
+    SwitchButton
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -86,7 +115,7 @@ const route = useRoute()
 
 // 当前用户信息
 const currentUser = ref({
-
+    username: ''
 })
 
 // 当前激活的菜单
@@ -114,6 +143,8 @@ const handleCommand = (command) => {
         })
     } else if (command === 'profile') {
         ElMessage.info('个人信息功能开发中')
+    } else if (command === 'settings') {
+        ElMessage.info('设置功能开发中')
     }
 }
 
@@ -133,30 +164,133 @@ onMounted(() => {
     overflow: hidden;
 }
 
-/* 左侧菜单栏样式 */
+/* 左侧菜单栏样式 - 渐变深色背景 */
 .sidebar {
-    background-color: #304156;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 137, 230, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 107, 179, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .logo-container {
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    color: #fff;
-    font-size: 18px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
 }
 
-.logo-container h2 {
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #0089e6 0%, #006bb3 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 12px;
+    box-shadow: 0 4px 14px rgba(0, 137, 230, 0.4);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text h2 {
     margin: 0;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.logo-text span {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
 }
 
 .el-menu-vertical {
     border-right: none;
+    background: transparent !important;
+    padding: 12px 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* 菜单项样式 */
+:deep(.el-menu-item) {
+    height: 50px;
+    line-height: 50px;
+    margin: 4px 12px;
+    padding: 0 16px !important;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+:deep(.el-menu-item::before) {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(0, 137, 230, 0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+:deep(.el-menu-item:hover) {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-left-color: rgba(0, 137, 230, 0.5);
+}
+
+:deep(.el-menu-item:hover::before) {
+    opacity: 1;
+}
+
+:deep(.el-menu-item.is-active) {
+    background: rgba(0, 137, 230, 0.15) !important;
+    border-left-color: #0089e6;
+    box-shadow: 0 0 20px rgba(0, 137, 230, 0.2);
+}
+
+:deep(.el-menu-item.is-active::before) {
+    opacity: 1;
+}
+
+:deep(.el-menu-item .el-icon) {
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+:deep(.el-menu-item span) {
+    font-size: 14px;
+    font-weight: 500;
 }
 
 /* 主容器样式 */
@@ -165,16 +299,22 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
-/* 顶部导航栏样式 */
+/* 顶部导航栏样式 - 毛玻璃效果 */
 .header {
-    background-color: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 24px;
+    height: 70px;
+    position: relative;
+    z-index: 10;
 }
 
 .header-left {
@@ -183,8 +323,9 @@ onMounted(() => {
 }
 
 .welcome-text {
-    font-size: 16px;
-    color: #333;
+    font-size: 15px;
+    color: #64748b;
+    font-weight: 500;
 }
 
 .header-right {
@@ -192,30 +333,118 @@ onMounted(() => {
     align-items: center;
 }
 
+.user-dropdown {
+    cursor: pointer;
+}
+
 .el-dropdown-link {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    color: #606266;
-    font-size: 14px;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.el-dropdown-link span {
-    margin: 0 8px;
+.el-dropdown-link:hover {
+    background: #f1f5f9;
+}
+
+.user-avatar {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
 }
 
 /* 内容区域样式 */
 .content {
-    background-color: #f0f2f5;
-    padding: 20px;
+    padding: 24px;
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
     position: relative;
 }
 
-/* 确保 router-view 占满内容区域 */
-.content :deep(.router-view-container),
-.content > * {
-    height: 100%;
+/* 页面过渡动画 */
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* 下拉菜单样式 */
+:deep(.user-dropdown-menu) {
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    min-width: 160px;
+}
+
+:deep(.user-dropdown-menu .el-dropdown-menu__item) {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+:deep(.user-dropdown-menu .el-dropdown-menu__item:hover) {
+    background: #f1f5f9;
+    color: #0089e6;
+}
+
+:deep(.user-dropdown-menu .el-dropdown-menu__item .el-icon) {
+    font-size: 16px;
+}
+
+/* 滚动条样式 */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 </style>

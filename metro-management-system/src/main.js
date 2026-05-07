@@ -17,6 +17,20 @@ import router from './router.js'//导入路由配置文件
 
 const app=createApp(App)
 
-app.use(ElementPlus)
+// 注册所有 Element Plus 图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+// 使用 Element Plus 并配置主题
+app.use(ElementPlus, {
+  locale: zhCn,
+  zIndex: 3000,
+  size: 'default',
+  button: {
+    autoInsertSpace: true
+  }
+})
+
 app.use(router)
 app.mount('#app')

@@ -9,6 +9,7 @@ import com.example.springboot.mapper.MetroTransferMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,5 +213,83 @@ public class MetroServiceImpl implements MetroService {
 
         result.put("trains", trains);
         return result;
+    }
+
+    // ---- 线路写操作 ----
+
+    @Override
+    public MetroLine addLine(MetroLine line) {
+        metroLineMapper.insert(line);
+        return line;
+    }
+
+    @Override
+    public int updateLine(MetroLine line) {
+        return metroLineMapper.update(line);
+    }
+
+    @Override
+    public int updateLinePath(Long id, String path) {
+        return metroLineMapper.updatePath(id, path);
+    }
+
+    @Override
+    public int deleteLine(Long id) {
+        return metroLineMapper.deleteById(id);
+    }
+
+    // ---- 站点写操作 ----
+
+    @Override
+    public MetroStation addStation(MetroStation station) {
+        metroStationMapper.insert(station);
+        return station;
+    }
+
+    @Override
+    public int updateStation(MetroStation station) {
+        return metroStationMapper.update(station);
+    }
+
+    @Override
+    public int updateStationPosition(Long id, BigDecimal longitude, BigDecimal latitude) {
+        return metroStationMapper.updatePosition(id, longitude, latitude);
+    }
+
+    @Override
+    public int deleteStation(Long id) {
+        return metroStationMapper.deleteById(id);
+    }
+
+    // ---- 换乘写操作 ----
+
+    @Override
+    public MetroTransfer addTransfer(MetroTransfer transfer) {
+        metroTransferMapper.insert(transfer);
+        return transfer;
+    }
+
+    @Override
+    public int updateTransfer(MetroTransfer transfer) {
+        return metroTransferMapper.update(transfer);
+    }
+
+    @Override
+    public int deleteTransfer(Long id) {
+        return metroTransferMapper.deleteById(id);
+    }
+
+    // ---- 时刻表 ----
+
+    @Override
+    public int updateSchedule(String lineId, MetroLine params) {
+        MetroLine line = metroLineMapper.findByLineId(lineId);
+        if (line == null) return 0;
+        line.setFirstTrainTime(params.getFirstTrainTime());
+        line.setLastTrainTime(params.getLastTrainTime());
+        line.setInterval(params.getInterval());
+        line.setSegmentTime(params.getSegmentTime());
+        line.setDwellTime(params.getDwellTime());
+        return metroLineMapper.update(line);
     }
 }

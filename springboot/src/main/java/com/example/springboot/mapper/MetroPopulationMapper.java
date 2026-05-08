@@ -29,7 +29,7 @@ public interface MetroPopulationMapper {
             "#{item.year}, #{item.month}, #{item.population}, #{item.crowdLevel})" +
             "</foreach>" +
             "</script>")
-    void batchInsert(@Param("list") List<MetroPopulation> list);
+    int batchInsert(@Param("list") List<MetroPopulation> list);
 
     // ---- 写操作 ----
 

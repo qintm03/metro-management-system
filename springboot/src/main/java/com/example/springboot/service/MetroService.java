@@ -4,6 +4,7 @@ import com.example.springboot.entity.MetroLine;
 import com.example.springboot.entity.MetroStation;
 import com.example.springboot.entity.MetroTransfer;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -80,4 +81,24 @@ public interface MetroService {
      * @return 列车列表（包含发车时间偏移量）
      */
     Map<String, Object> getTrains(String lineId);
+
+    // ---- 线路写操作 ----
+    MetroLine addLine(MetroLine line);
+    int updateLine(MetroLine line);
+    int updateLinePath(Long id, String path);
+    int deleteLine(Long id);
+
+    // ---- 站点写操作 ----
+    MetroStation addStation(MetroStation station);
+    int updateStation(MetroStation station);
+    int updateStationPosition(Long id, BigDecimal longitude, BigDecimal latitude);
+    int deleteStation(Long id);
+
+    // ---- 换乘写操作 ----
+    MetroTransfer addTransfer(MetroTransfer transfer);
+    int updateTransfer(MetroTransfer transfer);
+    int deleteTransfer(Long id);
+
+    // ---- 时刻表 ----
+    int updateSchedule(String lineId, MetroLine params);
 }

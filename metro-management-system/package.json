@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "concurrently \"npm run start:backend\" \"npm run dev\"",
-    "start:backend": "cd ../springboot && mvn spring-boot:run",
+    "start:backend": "cd ../springboot && C:\\tools\\apache-maven-3.9.15\\bin\\mvn spring-boot:run",
     "start:all": "concurrently \"npm run start:backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\""
   },
   "dependencies": {

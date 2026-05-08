@@ -37,11 +37,23 @@
                     </el-icon>
                     <span>实时轨迹</span>
                 </el-menu-item>
-                  <el-menu-item index="/user/UserTrackManagement">
+                <el-menu-item index="/user/UserTrackManagement">
                     <el-icon>
                         <Location />
                     </el-icon>
+                    <span>站点查询</span>
+                </el-menu-item>
+                <el-menu-item index="/user/HeatmapAnalysis">
+                    <el-icon>
+                        <TrendCharts />
+                    </el-icon>
                     <span>热力分析</span>
+                </el-menu-item>
+                <el-menu-item index="/user/UserManagement">
+                    <el-icon>
+                        <TrendCharts />
+                    </el-icon>
+                    <span>用户管理</span>
                 </el-menu-item>
                  
                 
@@ -102,6 +114,7 @@ import {
     Ticket,
     Location,
     Guide,
+    TrendCharts,
     ArrowDown,
     Avatar,
     Van,

@@ -8,6 +8,7 @@ import com.example.springboot.service.MetroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -155,5 +156,91 @@ public class MetroController {
             return Result.error("线路不存在");
         }
         return Result.success(trains);
+    }
+
+    // ---- 线路 CRUD ----
+
+    @PostMapping("/lines")
+    public Result addLine(@RequestBody MetroLine line) {
+        if (line.getLineId() == null || line.getLineName() == null) {
+            return Result.error("线路ID和名称不能为空");
+        }
+        MetroLine result = metroService.addLine(line);
+        return Result.success(result);
+    }
+
+    @PutMapping("/lines/{id}")
+    public Result updateLine(@PathVariable Long id, @RequestBody MetroLine line) {
+        line.setId(id);
+        int result = metroService.updateLine(line);
+        return result > 0 ? Result.success() : Result.error("更新失败");
+    }
+
+    @PutMapping("/lines/{id}/path")
+    public Result updateLinePath(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        int result = metroService.updateLinePath(id, body.get("path"));
+        return result > 0 ? Result.success() : Result.error("更新失败");
+    }
+
+    @DeleteMapping("/lines/{id}")
+    public Result deleteLine(@PathVariable Long id) {
+        int result = metroService.deleteLine(id);
+        return result > 0 ? Result.success() : Result.error("删除失败");
+    }
+
+    // ---- 站点 CRUD ----
+
+    @PostMapping("/stations")
+    public Result addStation(@RequestBody MetroStation station) {
+        MetroStation result = metroService.addStation(station);
+        return Result.success(result);
+    }
+
+    @PutMapping("/stations/{id}")
+    public Result updateStation(@PathVariable Long id, @RequestBody MetroStation station) {
+        station.setId(id);
+        int result = metroService.updateStation(station);
+        return result > 0 ? Result.success() : Result.error("更新失败");
+    }
+
+    @PutMapping("/stations/{id}/position")
+    public Result updateStationPosition(@PathVariable Long id, @RequestBody Map<String, BigDecimal> body) {
+        int result = metroService.updateStationPosition(id, body.get("longitude"), body.get("latitude"));
+        return result > 0 ? Result.success() : Result.error("更新失败");
+    }
+
+    @DeleteMapping("/stations/{id}")
+    public Result deleteStation(@PathVariable Long id) {
+        int result = metroService.deleteStation(id);
+        return result > 0 ? Result.success() : Result.error("删除失败");
+    }
+
+    // ---- 换乘 CRUD ----
+
+    @PostMapping("/transfers")
+    public Result addTransfer(@RequestBody MetroTransfer transfer) {
+        MetroTransfer result = metroService.addTransfer(transfer);
+        return Result.success(result);
+    }
+
+    @PutMapping("/transfers/{id}")
+    public Result updateTransfer(@PathVariable Long id, @RequestBody MetroTransfer transfer) {
+        transfer.setId(id);
+        int result = metroService.updateTransfer(transfer);
+        return result > 0 ? Result.success() : Result.error("更新失败");
+    }
+
+    @DeleteMapping("/transfers/{id}")
+    public Result deleteTransfer(@PathVariable Long id) {
+        int result = metroService.deleteTransfer(id);
+        return result > 0 ? Result.success() : Result.error("删除失败");
+    }
+
+    // ---- 时刻表 ----
+
+    @PutMapping("/line/{lineId}/schedule")
+    public Result updateSchedule(@PathVariable String lineId, @RequestBody MetroLine params) {
+        int result = metroService.updateSchedule(lineId, params);
+        return result > 0 ? Result.success() : Result.error("保存失败");
     }
 }

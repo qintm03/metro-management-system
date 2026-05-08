@@ -25,35 +25,29 @@
                     </el-icon>
                     <span>用户管理</span>
                 </el-menu-item>
-                <el-menu-item index="/manager/AdminTicketManagement">
-                    <el-icon>
-                        <Ticket />
-                    </el-icon>
-                    <span>票务管理</span>
-                </el-menu-item>
-                <el-menu-item index="/manager/AdminTrackManagement">
-                    <el-icon>
-                        <Location />
-                    </el-icon>
-                    <span>轨迹管理</span>
-                </el-menu-item>
                 <el-menu-item index="/manager/LineManagement">
-                    <el-icon>
-                        <Service />
-                    </el-icon>
-                    <span>线路管理</span>
-                </el-menu-item>
-                <el-menu-item index="/manager/MapManagement">
-                    <el-icon>
-                        <Guide />
-                    </el-icon>
-                    <span>地图管理</span>
-                </el-menu-item>
-                <el-menu-item index="/manager/ChecixianluManagement">
                     <el-icon>
                         <MapLocation />
                     </el-icon>
-                    <span>车次线路</span>
+                    <span>线路站点管理</span>
+                </el-menu-item>
+                <el-menu-item index="/manager/ScheduleConfig">
+                    <el-icon>
+                        <Timer />
+                    </el-icon>
+                    <span>时刻表配置</span>
+                </el-menu-item>
+                <el-menu-item index="/manager/DataManagement">
+                    <el-icon>
+                        <DataAnalysis />
+                    </el-icon>
+                    <span>数据管理</span>
+                </el-menu-item>
+                <el-menu-item index="/manager/SystemSettings">
+                    <el-icon>
+                        <Setting />
+                    </el-icon>
+                    <span>系统配置</span>
                 </el-menu-item>
             </el-menu>
         </el-aside>
@@ -111,15 +105,13 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import {
     HomeFilled,
     User,
-    Ticket,
-    Location,
-    Service,
-    Guide,
+    MapLocation,
+    Timer,
+    DataAnalysis,
+    Setting,
     ArrowDown,
     Avatar,
     Van,
-    MapLocation,
-    Setting,
     SwitchButton
 } from '@element-plus/icons-vue'
 

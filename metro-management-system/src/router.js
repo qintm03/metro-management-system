@@ -8,18 +8,21 @@ import Manager from './components/Manager.vue'
 import Test from './components/Test.vue'
 
 import TripService from './components/user/TripService.vue'
-import UserManagement from './components/admin/UserManagement.vue'
 import UserTrackManagement from './components/user/UserTrackManagement.vue'
 import UserHomePage from './components/user/UserHomePage.vue'
 import RealTimeTrack from './components/user/RealTimeTrack.vue'
 import StationServices from './components/user/StationServices.vue'
 import HeatmapAnalysis from './components/user/HeatmapAnalysis.vue'
+//import UserManagement from './components/user/UserManagement.vue'
 
 import AdminHomePage from './components/admin/AdminHomePage.vue'
+import UserManagement from './components/admin/UserManagement.vue'
 import LineManagement from './components/admin/LineManagement.vue'
-import MapManagement from './components/admin/MapManagement.vue'
-import AdminTicketManagement from './components/admin/AdminTicketManagement.vue'
-import AdminTrackManagement from './components/admin/AdminTrackManagement.vue'
+import ScheduleConfig from './components/admin/ScheduleConfig.vue'
+import DataManagement from './components/admin/DataManagement.vue'
+import SystemSettings from './components/admin/SystemSettings.vue'
+import demo from './components/admin/demo.vue'  
+
 
 
 
@@ -36,10 +39,11 @@ const routes = [
     children: [
       { path: 'AdminHomePage', component: AdminHomePage },
       { path: 'LineManagement', component: LineManagement },
-      { path: 'MapManagement', component: MapManagement },
-      { path: 'AdminTicketManagement', component: AdminTicketManagement },
-      { path: 'AdminTrackManagement', component: AdminTrackManagement },
+      { path: 'ScheduleConfig', component: ScheduleConfig },
+      { path: 'DataManagement', component: DataManagement },
+      { path: 'SystemSettings', component: SystemSettings },
       { path: 'UserManagement', component: UserManagement },
+      { path: 'demo', component: demo },
     ]
   },
   {

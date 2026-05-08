@@ -1,10 +1,9 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.MetroStation;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -64,4 +63,24 @@ public interface MetroStationMapper {
      */
     @Select("SELECT * FROM metro_station WHERE station_name LIKE CONCAT('%', #{keyword}, '%') AND status = 1")
     List<MetroStation> findByStationNameLike(@Param("keyword") String keyword);
+
+    // ---- 写操作 ----
+
+    @Insert("INSERT INTO metro_station(station_name, line_id, sequence, longitude, latitude, " +
+            "is_transfer, transfer_count, status, created_at, updated_at) " +
+            "VALUES(#{stationName}, #{lineId}, #{sequence}, #{longitude}, #{latitude}, " +
+            "#{isTransfer}, #{transferCount}, 1, NOW(), NOW())")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insert(MetroStation station);
+
+    @Update("UPDATE metro_station SET station_name=#{stationName}, sequence=#{sequence}, " +
+            "longitude=#{longitude}, latitude=#{latitude}, is_transfer=#{isTransfer}, " +
+            "transfer_count=#{transferCount}, updated_at=NOW() WHERE id=#{id}")
+    int update(MetroStation station);
+
+    @Update("UPDATE metro_station SET longitude=#{longitude}, latitude=#{latitude}, updated_at=NOW() WHERE id=#{id}")
+    int updatePosition(@Param("id") Long id, @Param("longitude") BigDecimal longitude, @Param("latitude") BigDecimal latitude);
+
+    @Delete("UPDATE metro_station SET status = 0, updated_at = NOW() WHERE id = #{id}")
+    int deleteById(@Param("id") Long id);
 }

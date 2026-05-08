@@ -1,9 +1,7 @@
 package com.example.springboot.mapper;
 
 import com.example.springboot.entity.MetroLine;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -44,4 +42,28 @@ public interface MetroLineMapper {
             "LEFT JOIN metro_station s ON l.line_id = s.line_id AND s.status = 1 " +
             "WHERE l.status = 1 GROUP BY l.id ORDER BY l.id")
     List<MetroLine> findAllWithStationCount();
+
+    // ---- 写操作 ----
+
+    @Insert("INSERT INTO metro_line(line_id, line_name, line_code, color, start_station, end_station, " +
+            "first_train_time, last_train_time, `interval`, segment_time, dwell_time, distance, station_count, " +
+            "path, status, created_at, updated_at) " +
+            "VALUES(#{lineId}, #{lineName}, #{lineCode}, #{color}, #{startStation}, #{endStation}, " +
+            "#{firstTrainTime}, #{lastTrainTime}, #{interval}, #{segmentTime}, #{dwellTime}, #{distance}, #{stationCount}, " +
+            "#{path}, 1, NOW(), NOW())")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insert(MetroLine line);
+
+    @Update("UPDATE metro_line SET line_name=#{lineName}, color=#{color}, start_station=#{startStation}, " +
+            "end_station=#{endStation}, first_train_time=#{firstTrainTime}, last_train_time=#{lastTrainTime}, " +
+            "`interval`=#{interval}, segment_time=#{segmentTime}, dwell_time=#{dwellTime}, " +
+            "distance=#{distance}, path=#{path}, updated_at=NOW() " +
+            "WHERE id=#{id}")
+    int update(MetroLine line);
+
+    @Update("UPDATE metro_line SET path=#{path}, updated_at=NOW() WHERE id=#{id}")
+    int updatePath(@Param("id") Long id, @Param("path") String path);
+
+    @Delete("UPDATE metro_line SET status = 0, updated_at = NOW() WHERE id = #{id}")
+    int deleteById(@Param("id") Long id);
 }

@@ -13,7 +13,11 @@
       <el-table :data="tableData" style="width: 100%; margin-top: 20px" border>
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="username" label="用户名" width="150" />
-        <el-table-column prop="password" label="密码" width="150" />
+        <el-table-column label="密码" width="150">
+          <template #default>
+            <span>******</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="姓名" width="150" />
         <el-table-column prop="role" label="角色" width="120">
           <template #default="{ row }">
@@ -156,7 +160,7 @@ const handleEdit = (row) => {
   dialogTitle.value = '编辑用户'
   form.id = row.id
   form.username = row.username
-  form.password = row.password
+  form.password = ''  // 编辑时不填充密码
   form.name = row.name
   form.role = row.role
   dialogVisible.value = true
@@ -183,7 +187,9 @@ const handleSubmit = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       if (form.id) {
-        request.put('/user', form).then(res => {
+        const data = { ...form }
+        if (!data.password) delete data.password  // 编辑时密码为空则不修改
+        request.put('/user', data).then(res => {
           if (res.code === '200') {
             ElMessage.success('更新成功')
             dialogVisible.value = false

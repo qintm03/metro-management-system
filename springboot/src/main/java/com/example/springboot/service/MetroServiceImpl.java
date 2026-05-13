@@ -172,6 +172,7 @@ public class MetroServiceImpl implements MetroService {
         result.put("interval", line.getInterval() != null ? line.getInterval() : 300);
         result.put("segmentTime", line.getSegmentTime() != null ? line.getSegmentTime() : 180);
         result.put("dwellTime", line.getDwellTime() != null ? line.getDwellTime() : 30);
+        result.put("trainCount", line.getTrainCount() != null ? line.getTrainCount() : 10);
         
         // 站点信息
         List<Map<String, Object>> stationList = stations.stream().map(s -> {
@@ -200,9 +201,9 @@ public class MetroServiceImpl implements MetroService {
 
         // 获取发车间隔（默认5分钟）
         int interval = line.getInterval() != null ? line.getInterval() : 300;
+        int trainCount = line.getTrainCount() != null ? line.getTrainCount() : 10;
         
-        // 生成10辆列车（可根据需要调整数量）
-        int trainCount = 20;
+        // 生成 trainCount 辆列车
         List<Map<String, Object>> trains = new ArrayList<>();
         for (int i = 0; i < trainCount; i++) {
             Map<String, Object> train = new HashMap<>();
@@ -290,6 +291,7 @@ public class MetroServiceImpl implements MetroService {
         line.setInterval(params.getInterval());
         line.setSegmentTime(params.getSegmentTime());
         line.setDwellTime(params.getDwellTime());
+        line.setTrainCount(params.getTrainCount());
         return metroLineMapper.update(line);
     }
 }

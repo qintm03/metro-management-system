@@ -111,9 +111,9 @@ const formRef = ref()
 const loading = ref(false)
 
 const form = reactive({
-  username: 'qtm',
+  username: 'admin',
   password: '123456',
-  role: '普通用户'
+  role: '管理员'
 })
 
 const rules = {

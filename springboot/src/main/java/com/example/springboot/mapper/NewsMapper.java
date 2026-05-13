@@ -8,12 +8,12 @@ import java.util.List;
 @Mapper
 public interface NewsMapper {
 
-    @Insert("INSERT INTO news(title, introduction, picture, content, addtime) " +
-            "VALUES(#{title}, #{introduction}, #{picture}, #{content}, NOW())")
+    @Insert("INSERT INTO news(title, introduction, content, addtime) " +
+            "VALUES(#{title}, #{introduction}, #{content}, NOW())")
     int insert(News news);
 
     @Update("UPDATE news SET title=#{title}, introduction=#{introduction}, " +
-            "picture=#{picture}, content=#{content} WHERE id=#{id}")
+            "content=#{content} WHERE id=#{id}")
     int update(News news);
 
     @Delete("DELETE FROM news WHERE id=#{id}")

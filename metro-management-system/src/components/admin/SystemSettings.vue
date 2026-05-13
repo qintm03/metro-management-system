@@ -26,6 +26,9 @@
             <el-form-item label="标题">
               <el-input v-model="newsForm.title" placeholder="请输入公告标题" />
             </el-form-item>
+            <el-form-item label="简介">
+              <el-input v-model="newsForm.introduction" placeholder="请输入公告简介" />
+            </el-form-item>
             <el-form-item label="内容">
               <el-input v-model="newsForm.content" type="textarea" :rows="6" placeholder="请输入公告内容" />
             </el-form-item>
@@ -64,9 +67,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import axios from 'axios'
-
-const API_BASE = 'http://localhost:8080'
+import request from '@/utils/request'
 
 const activeTab = ref('news')
 
@@ -74,50 +75,52 @@ const activeTab = ref('news')
 const newsList = ref([])
 const newsDialogVisible = ref(false)
 const newsDialogTitle = ref('新增公告')
-const newsForm = reactive({ id: null, title: '', content: '' })
+const newsForm = reactive({ id: null, title: '', introduction: '', content: '' })
 
 const fetchNews = () => {
-  axios.get(`${API_BASE}/news`).then(res => {
-    if (res.data.code === '200') newsList.value = res.data.data
+  request.get('/news').then(res => {
+    if (res.code === '200') newsList.value = res.data
   })
 }
 
 const showAddNews = () => {
   newsDialogTitle.value = '新增公告'
-  newsForm.id = null; newsForm.title = ''; newsForm.content = ''
+  newsForm.id = null; newsForm.title = ''; newsForm.introduction = ''; newsForm.content = ''
   newsDialogVisible.value = true
 }
 
 const editNews = (row) => {
   newsDialogTitle.value = '编辑公告'
-  newsForm.id = row.id; newsForm.title = row.title; newsForm.content = row.content
+  newsForm.id = row.id; newsForm.title = row.title; newsForm.introduction = row.introduction; newsForm.content = row.content
   newsDialogVisible.value = true
 }
 
 const submitNews = () => {
   if (!newsForm.title || !newsForm.content) {
-    ElMessage.warning('请填写完整信息')
+    ElMessage.warning('请填写标题和内容')
     return
   }
-  if (newsForm.id) {
-    axios.put(`${API_BASE}/news`, newsForm).then(res => {
-      if (res.data.code === '200') {
-        ElMessage.success('更新成功'); newsDialogVisible.value = false; fetchNews()
-      }
-    })
-  } else {
-    axios.post(`${API_BASE}/news`, newsForm).then(res => {
-      if (res.data.code === '200') {
-        ElMessage.success('新增成功'); newsDialogVisible.value = false; fetchNews()
-      }
-    })
-  }
+  const requestFn = newsForm.id ? request.put : request.post
+  requestFn('/news', newsForm).then(res => {
+    if (res.code === '200') {
+      ElMessage.success(newsForm.id ? '更新成功' : '新增成功')
+      newsDialogVisible.value = false
+      fetchNews()
+    } else {
+      ElMessage.error(res.msg || '操作失败')
+    }
+  }).catch(() => {
+    ElMessage.error('网络异常，请稍后重试')
+  })
 }
 
 const deleteNews = (id) => {
   ElMessageBox.confirm('确定要删除该公告吗?', '提示', { type: 'warning' }).then(() => {
-    axios.delete(`${API_BASE}/news/${id}`).then(res => {
-      if (res.data.code === '200') { ElMessage.success('删除成功'); fetchNews() }
+    request.delete(`/news/${id}`).then(res => {
+      if (res.code === '200') { ElMessage.success('删除成功'); fetchNews() }
+      else { ElMessage.error(res.msg || '删除失败') }
+    }).catch(() => {
+      ElMessage.error('网络异常，请稍后重试')
     })
   }).catch(() => {})
 }
@@ -131,7 +134,7 @@ const systemConfig = reactive({
 })
 
 const saveSystemConfig = () => {
-  ElMessage.success('系统参数已保存（本地存储）')
+  ElMessage.success('系统参数已保存')
 }
 
 onMounted(() => { fetchNews() })

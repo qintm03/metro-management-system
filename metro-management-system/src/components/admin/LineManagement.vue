@@ -1,144 +1,187 @@
 <template>
   <div class="line-management">
-    <!-- 左侧控制面板 -->
-    <div class="left-panel">
-      <div class="panel-header">
-        <h3><el-icon><List /></el-icon> 线路列表</h3>
-      </div>
-      <div class="line-list">
-        <el-checkbox-group v-model="checkedLines">
-          <div v-for="line in lines" :key="line.lineId" class="line-item"
-               :style="{ borderLeftColor: line.color }"
-               :class="{ active: selectedLine?.lineId === line.lineId }"
-               @click="selectLine(line)">
-            <el-checkbox :value="line.lineId" @change="toggleLine(line)">
-              <span class="line-name" :style="{ color: line.color }">
-                <span class="line-dot" :style="{ background: line.color }"></span>
-                {{ line.lineName }}
-              </span>
-            </el-checkbox>
+    <!-- 主内容区 -->
+    <main class="dashboard-main">
+      <!-- 左侧边栏 -->
+      <aside class="sidebar-left">
+        <!-- 线路列表面板 -->
+        <div class="data-panel">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <el-icon><List /></el-icon>
+            </div>
+            <h3>线路列表</h3>
           </div>
-        </el-checkbox-group>
-      </div>
-      <div class="panel-actions">
-        <el-button size="small" @click="checkAll">全选</el-button>
-        <el-button size="small" @click="uncheckAll">反选</el-button>
-      </div>
-      <el-divider />
-      <div class="panel-actions">
-        <el-button type="primary" size="small" @click="showAddLineDialog">
-          <el-icon><Plus /></el-icon> 新增线路
-        </el-button>
-      </div>
-      <el-divider />
-      <div class="edit-mode-toggle">
-        <div class="toggle-label">
-          <el-icon><Edit /></el-icon> 编辑模式
-        </div>
-        <el-switch v-model="isEditing" @change="onEditModeChange" />
-      </div>
-      <div class="panel-actions">
-        <el-button type="success" size="small" :disabled="!hasChanges" @click="saveAll">
-          <el-icon><Check /></el-icon> 保存全部{{ hasChanges ? `(${dirtyCount})` : '' }}
-        </el-button>
-      </div>
-    </div>
-
-    <!-- 中央地图区 -->
-    <div class="map-container" ref="mapContainer">
-      <div id="metroMap"></div>
-      <!-- 修改提示 -->
-      <div class="status-bar" v-if="hasChanges">
-        <el-alert :title="`正在编辑${selectedLine?.lineName || ''} | 有${dirtyCount}项未保存的修改`"
-                  type="warning" :closable="false" show-icon size="small" />
-      </div>
-    </div>
-
-    <!-- 右侧属性编辑面板 -->
-    <div class="right-panel">
-      <div class="panel-header">
-        <h3><el-icon><InfoFilled /></el-icon> 属性编辑</h3>
-      </div>
-      <template v-if="selectedLine && !selectedStation">
-        <!-- 线路属性 -->
-        <div class="property-section">
-          <h4>线路属性</h4>
-          <el-form label-width="70px" size="small">
-            <el-form-item label="线路名称">
-              <el-input v-model="editForm.lineName" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="线路颜色">
-              <el-color-picker v-model="editForm.color" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="起点站">
-              <el-input v-model="editForm.startStation" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="终点站">
-              <el-input v-model="editForm.endStation" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="运营状态">
-              <el-select v-model="editForm.status" :disabled="!isEditing">
-                <el-option label="运营中" :value="1" />
-                <el-option label="建设中" :value="0" />
-              </el-select>
-            </el-form-item>
-            <el-button v-if="isEditing" type="primary" size="small" @click="saveLineProps">保存线路属性</el-button>
-          </el-form>
-        </div>
-        <el-divider />
-        <!-- 站点列表 -->
-        <div class="property-section">
-          <h4>站点列表</h4>
-          <div class="station-list">
-            <div v-for="(st, idx) in currentStations" :key="st.id"
-                 class="station-item"
-                 :class="{ active: selectedStation?.id === st.id }"
-                 @click="selectStation(st)">
-              <span class="station-idx">{{ idx + 1 }}</span>
-              <span class="station-name">{{ st.stationName }}</span>
-              <el-tag v-if="st.isTransfer === 1 || st.isTransfer === '1'" size="mini" type="warning">换乘</el-tag>
+          <div class="panel-content">
+            <div class="line-list">
+              <el-checkbox-group v-model="checkedLines">
+                <div v-for="line in lines" :key="line.lineId" class="line-item"
+                     :style="{ borderLeftColor: line.color }"
+                     :class="{ active: selectedLine?.lineId === line.lineId }"
+                     @click="selectLine(line)">
+                  <el-checkbox :value="line.lineId" @change="toggleLine(line)">
+                    <span class="line-name" :style="{ color: line.color }">
+                      <span class="line-dot" :style="{ background: line.color }"></span>
+                      {{ line.lineName }}
+                    </span>
+                  </el-checkbox>
+                </div>
+              </el-checkbox-group>
+            </div>
+            <div class="panel-actions">
+              <el-button size="small" @click="checkAll">全选</el-button>
+              <el-button size="small" @click="uncheckAll">反选</el-button>
+            </div>
+            <div class="panel-actions">
+              <el-button type="primary" size="small" @click="showAddLineDialog">
+                <el-icon><Plus /></el-icon> 新增线路
+              </el-button>
             </div>
           </div>
-          <el-button v-if="isEditing" size="small" @click="showAddStationDialog" style="margin-top:8px;width:100%">
-            <el-icon><Plus /></el-icon> 新增站点
-          </el-button>
         </div>
-      </template>
 
-      <template v-if="selectedStation">
-        <!-- 站点属性 -->
-        <div class="property-section">
-          <h4>站点属性
-            <el-button size="small" text @click="selectedStation = null">返回线路</el-button>
-          </h4>
-          <el-form label-width="70px" size="small">
-            <el-form-item label="站点名称">
-              <el-input v-model="stationForm.stationName" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="顺序号">
-              <el-input-number v-model="stationForm.sequence" :min="1" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="经度">
-              <el-input v-model="stationForm.longitude" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="纬度">
-              <el-input v-model="stationForm.latitude" :disabled="!isEditing" />
-            </el-form-item>
-            <el-form-item label="换乘站">
-              <el-switch v-model="stationForm.isTransferBool" :disabled="!isEditing" />
-            </el-form-item>
-          </el-form>
-          <div class="station-actions" v-if="isEditing">
-            <el-button type="primary" size="small" @click="saveStationProps">保存修改</el-button>
-            <el-button type="danger" size="small" @click="confirmDeleteStation">删除站点</el-button>
+        <!-- 编辑模式面板 -->
+        <div class="data-panel">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <el-icon><Edit /></el-icon>
+            </div>
+            <h3>编辑模式</h3>
+          </div>
+          <div class="panel-content">
+            <div class="edit-mode-buttons">
+              <el-button
+                :type="editingMode === 'line' ? 'primary' : 'default'"
+                size="small"
+                @click="setEditingMode('line')">
+                <el-icon><Edit /></el-icon> 编辑线路
+              </el-button>
+              <el-button
+                :type="editingMode === 'station' ? 'primary' : 'default'"
+                size="small"
+                @click="setEditingMode('station')">
+                <el-icon><Edit /></el-icon> 编辑站点
+              </el-button>
+            </div>
+            <el-button type="success" size="small" :disabled="!hasChanges" @click="saveAll">
+              <el-icon><Check /></el-icon> 保存全部{{ hasChanges ? `(${dirtyCount})` : '' }}
+            </el-button>
           </div>
         </div>
-      </template>
+      </aside>
 
-      <div class="panel-hint" v-if="!selectedLine && !selectedStation">
-        <el-empty description="请从左侧选择一条线路" />
-      </div>
-    </div>
+      <!-- 中央地图区域 -->
+      <section class="map-section">
+        <div id="metroMap" class="amap-container"></div>
+        <!-- 修改提示 -->
+        <div class="status-bar" v-if="hasChanges">
+          <el-alert :title="`正在编辑${selectedLine?.lineName || ''} | 有${dirtyCount}项未保存的修改`"
+                    type="warning" :closable="false" show-icon size="small" />
+        </div>
+      </section>
+
+      <!-- 右侧边栏：属性编辑 -->
+      <aside class="sidebar-right">
+        <!-- 线路属性 -->
+        <div class="data-panel" v-if="selectedLine && editingMode !== 'station' && (!selectedStation || editingMode === 'line')">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <el-icon><InfoFilled /></el-icon>
+            </div>
+            <h3>线路属性</h3>
+          </div>
+          <div class="panel-content">
+            <el-form label-width="70px" size="small" class="property-form">
+              <el-form-item label="线路名称">
+                <el-input v-model="editForm.lineName" :disabled="editingMode !== 'line'" />
+              </el-form-item>
+              <el-form-item label="线路颜色">
+                <el-color-picker v-model="editForm.color" :disabled="editingMode !== 'line'" />
+              </el-form-item>
+              <el-form-item label="起点站">
+                <el-input v-model="editForm.startStation" :disabled="editingMode !== 'line'" />
+              </el-form-item>
+              <el-form-item label="终点站">
+                <el-input v-model="editForm.endStation" :disabled="editingMode !== 'line'" />
+              </el-form-item>
+              <el-form-item label="运营状态">
+                <el-select v-model="editForm.status" :disabled="editingMode !== 'line'">
+                  <el-option label="运营中" :value="1" />
+                  <el-option label="建设中" :value="0" />
+                </el-select>
+              </el-form-item>
+              <el-button v-if="editingMode === 'line'" type="primary" size="small" class="save-btn" @click="saveLineProps">保存线路属性</el-button>
+            </el-form>
+          </div>
+        </div>
+
+        <!-- 站点列表 -->
+        <div class="data-panel" v-if="selectedLine">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <el-icon><List /></el-icon>
+            </div>
+            <h3>站点列表</h3>
+          </div>
+          <div class="panel-content">
+            <div class="station-items">
+              <div v-for="(st, idx) in currentStations" :key="st.id"
+                   class="station-item"
+                   :class="{ active: selectedStation?.id === st.id }"
+                   @click="selectStation(st)">
+                <span class="station-idx">{{ idx + 1 }}</span>
+                <span class="station-name">{{ st.stationName }}</span>
+                <el-tag v-if="st.isTransfer === 1 || st.isTransfer === '1'" size="small" type="warning">换乘</el-tag>
+              </div>
+            </div>
+            <el-button v-if="editingMode === 'station'" size="small" @click="showAddStationDialog" class="add-station-btn">
+              <el-icon><Plus /></el-icon> 新增站点
+            </el-button>
+          </div>
+        </div>
+
+        <!-- 站点属性 -->
+        <div class="data-panel" v-if="selectedStation">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <el-icon><InfoFilled /></el-icon>
+            </div>
+            <h3>站点属性</h3>
+          </div>
+          <div class="panel-content">
+            <el-form label-width="70px" size="small" class="property-form">
+              <el-form-item label="站点名称">
+                <el-input v-model="stationForm.stationName" :disabled="editingMode !== 'station'" />
+              </el-form-item>
+              <el-form-item label="顺序号">
+                <el-input-number v-model="stationForm.sequence" :min="1" :disabled="editingMode !== 'station'" />
+              </el-form-item>
+              <el-form-item label="经度">
+                <el-input v-model="stationForm.longitude" :disabled="editingMode !== 'station'" />
+              </el-form-item>
+              <el-form-item label="纬度">
+                <el-input v-model="stationForm.latitude" :disabled="editingMode !== 'station'" />
+              </el-form-item>
+              <el-form-item label="换乘站">
+                <el-switch v-model="stationForm.isTransferBool" :disabled="editingMode !== 'station'" />
+              </el-form-item>
+            </el-form>
+            <div class="station-actions" v-if="editingMode === 'station'">
+              <el-button type="primary" size="small" @click="saveStationProps">保存修改</el-button>
+              <el-button type="danger" size="small" @click="confirmDeleteStation">删除站点</el-button>
+            </div>
+            <el-button size="small" text @click="selectedStation = null" class="back-btn">返回线路</el-button>
+          </div>
+        </div>
+
+        <!-- 空状态 -->
+        <div class="data-panel empty-panel" v-if="!selectedLine && !selectedStation">
+          <div class="panel-content">
+            <el-empty description="请从左侧选择一条线路" />
+          </div>
+        </div>
+      </aside>
+    </main>
 
     <!-- 新增线路对话框 -->
     <el-dialog v-model="addLineDialogVisible" title="新增线路" width="450px">
@@ -181,7 +224,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { List, InfoFilled, Edit, Plus, Check } from '@element-plus/icons-vue'
 import AMapLoader from '@amap/amap-jsapi-loader'
@@ -194,7 +237,7 @@ import {
 
 const LINES_COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e']
 
-// 地图相关
+// ========== 地图相关 ==========
 let map = null
 let polylines = {}
 let markers = {}
@@ -206,7 +249,7 @@ const lines = ref([])
 const checkedLines = ref([])
 const selectedLine = ref(null)
 const selectedStation = ref(null)
-const isEditing = ref(false)
+const editingMode = ref('')
 const hasChanges = ref(false)
 const dirtyCount = computed(() => {
   let count = 0
@@ -242,17 +285,18 @@ const initMap = () => {
   AMapLoader.load({
     key: '49f3c3fd7e6380f9c8b84c0f0bdd4d9f',
     version: '2.0',
-    plugins: ['AMap.Scale', 'AMap.ToolBar']
+    plugins: ['AMap.Scale', 'AMap.ToolBar', 'AMap.PolylineEditor']
   }).then(AMap => {
     map = new AMap.Map('metroMap', {
       zoom: MAP_ZOOM,
       center: MAP_CENTER,
-      viewMode: '2D',
-      mapStyle: 'amap://styles/light'
+      viewMode: '2D'
     })
     map.addControl(new AMap.Scale())
     map.addControl(new AMap.ToolBar())
     loadData()
+    // 确保容器尺寸正确后重置地图大小，修复坐标偏移
+    setTimeout(() => { try { map?.resize?.() } catch(e) {} }, 300)
   }).catch(e => console.error(e))
 }
 
@@ -306,7 +350,14 @@ const renderLine = (line) => {
       lineCap: 'round'
     })
     polyline.setExtData({ lineId: line.lineId })
-    polyline.on('click', () => selectLine(line))
+    polyline.on('click', () => {
+      if (editingMode.value === 'line') {
+        selectLine(line)
+        startLineEdit(line)
+      } else {
+        selectLine(line)
+      }
+    })
     map.add(polyline)
     polylines[line.lineId] = polyline
   }
@@ -322,7 +373,7 @@ const renderLine = (line) => {
         position: [lng, lat],
         title: station.stationName,
         label: { content: station.stationName, direction: 'top', offset: [0, -5] },
-        draggable: isEditing.value
+        draggable: editingMode.value === 'station'
       })
       marker.setExtData({ stationId: station.id, lineId: station.lineId })
       marker.on('click', () => selectStation(station))
@@ -346,6 +397,7 @@ const renderLine = (line) => {
 // 清除地图所有覆盖物
 const clearMap = () => {
   if (!map) return
+  closeEditor()
   Object.values(polylines).forEach(p => map.remove(p))
   polylines = {}
   Object.values(markers).forEach(arr => arr.forEach(m => map.remove(m)))
@@ -395,6 +447,7 @@ const selectLine = (line) => {
   if (map && polylines[line.lineId]) {
     map.setFitView([polylines[line.lineId]], false, [50, 50, 50, 50])
   }
+
 }
 
 // 选择站点
@@ -417,11 +470,71 @@ const selectStation = (station) => {
 }
 
 // 编辑模式切换
-const onEditModeChange = (val) => {
-  // 切换所有 marker 的可拖拽状态
-  Object.values(markers).forEach(arr => {
-    arr.forEach(m => m.setDraggable(val))
-  })
+const setEditingMode = (mode) => {
+  if (editingMode.value === mode) {
+    editingMode.value = ''
+    closeEditor()
+    Object.values(markers).forEach(arr => arr.forEach(m => m.setDraggable(false)))
+    return
+  }
+  editingMode.value = mode
+  closeEditor()
+  Object.values(markers).forEach(arr => arr.forEach(m => m.setDraggable(false)))
+  if (mode === 'line') {
+    const visibleLines = lines.value.filter(l => checkedLines.value.includes(l.lineId))
+    if (visibleLines.length > 0) {
+      const target = selectedLine.value && checkedLines.value.includes(selectedLine.value.lineId)
+        ? selectedLine.value : visibleLines[0]
+      selectLine(target)
+      nextTick(() => startLineEdit(target))
+    }
+  } else if (mode === 'station') {
+    Object.values(markers).forEach(arr => arr.forEach(m => m.setDraggable(true)))
+  }
+}
+
+// 折线路径编辑（PolylineEditor）
+const startLineEdit = (line) => {
+  if (!map || !window.AMap) return
+  closeEditor()
+
+  const polyline = polylines[line.lineId]
+  if (!polyline) {
+    ElMessage.warning('该线路没有路径数据')
+    return
+  }
+
+  const AMap = window.AMap
+
+  if (!AMap.PolylineEditor) {
+    AMap.plugin(['AMap.PolylineEditor'], () => createEditor(polyline, line))
+  } else {
+    createEditor(polyline, line)
+  }
+}
+
+const createEditor = (polyline, line) => {
+  if (!map || !window.AMap) return
+  currentEditor = new window.AMap.PolylineEditor(map, polyline)
+  currentEditor.on('adjust', () => onPathChanged(line, polyline))
+  currentEditor.on('addnode', () => onPathChanged(line, polyline))
+  currentEditor.on('removenode', () => onPathChanged(line, polyline))
+  currentEditor.open()
+}
+
+const onPathChanged = (line, polyline) => {
+  const path = polyline.getPath()
+  if (!path || path.length === 0) return
+  line.path = path.map(p => [p.getLng(), p.getLat()])
+  line._dirty = true
+  hasChanges.value = true
+}
+
+const closeEditor = () => {
+  if (currentEditor) {
+    currentEditor.close()
+    currentEditor = null
+  }
 }
 
 // 保存线路属性
@@ -607,33 +720,132 @@ const confirmDeleteStation = () => {
 onMounted(() => {
   initMap()
 })
+
+onUnmounted(() => {
+  closeEditor()
+})
 </script>
 
 <style scoped>
+/* 页面容器 */
 .line-management {
+  width: 100%;
+  height: 100%;
   display: flex;
-  height: calc(100vh - 140px);
-  position: relative;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.left-panel {
-  width: 220px;
-  min-width: 220px;
+/* 主内容区 */
+.dashboard-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  gap: 15px;
+  padding: 15px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* 左侧边栏 */
+.sidebar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* 中央地图区域 */
+.map-section {
+  position: relative;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  padding: 16px;
-  overflow-y: auto;
+  overflow: hidden;
+}
+
+.amap-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* 修改提示 */
+.status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+/* 右侧边栏 */
+.sidebar-right {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* 数据面板 */
+.data-panel {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.data-panel:last-child {
+  flex-shrink: 1;
+  overflow-y: auto;
+}
+
+.empty-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.panel-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ecf5ff;
+  border-radius: 8px;
+  color: #409eff;
 }
 
 .panel-header h3 {
-  margin: 0 0 12px 0;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+  color: #303133;
+  font-weight: 500;
+}
+
+.panel-content {
+  padding: 12px 15px;
+}
+
+/* 线路列表 */
+.line-list {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 12px;
 }
 
 .line-item {
@@ -644,61 +856,76 @@ onMounted(() => {
   margin-bottom: 2px;
   transition: all 0.2s;
 }
-.line-item:hover { background: #f5f7fa; }
-.line-item.active { background: #ecf5ff; }
-.line-name { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
-.line-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-.panel-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.line-item:hover {
+  background: #f5f7fa;
+}
 
-.edit-mode-toggle {
+.line-item.active {
+  background: #ecf5ff;
+}
+
+.line-name {
+  font-size: 13px;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
+  gap: 6px;
 }
-.toggle-label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
 
-.map-container {
+.line-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* 面板操作按钮 */
+.panel-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-actions .el-button {
   flex: 1;
-  margin: 0 8px;
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-}
-#metroMap { width: 100%; height: 100%; }
-
-.status-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
+  min-width: 80px;
 }
 
-.right-panel {
-  width: 300px;
-  min-width: 300px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  padding: 16px;
-  overflow-y: auto;
-}
-
-.property-section h4 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: #333;
+/* 编辑模式按钮组 */
+.edit-mode-buttons {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.station-list {
-  max-height: 300px;
-  overflow-y: auto;
+.edit-mode-buttons .el-button {
+  width: 100%;
 }
+
+/* 属性表单 */
+.property-form {
+  margin-bottom: 0;
+}
+
+.property-form .el-form-item {
+  margin-bottom: 12px;
+}
+
+.save-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* 站点列表 */
+.station-items {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
 .station-item {
   display: flex;
   align-items: center;
@@ -708,12 +935,67 @@ onMounted(() => {
   border-radius: 4px;
   font-size: 13px;
 }
-.station-item:hover { background: #f5f7fa; }
-.station-item.active { background: #ecf5ff; }
-.station-idx { width: 20px; height: 20px; border-radius: 50%; background: #e8e8e8; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #666; }
-.station-name { flex: 1; }
 
-.station-actions { display: flex; gap: 8px; margin-top: 12px; }
+.station-item:hover {
+  background: #f5f7fa;
+}
 
-.panel-hint { display: flex; align-items: center; justify-content: center; height: 200px; }
+.station-item.active {
+  background: #ecf5ff;
+}
+
+.station-idx {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.station-name {
+  flex: 1;
+}
+
+.add-station-btn {
+  width: 100%;
+}
+
+/* 站点操作 */
+.station-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.station-actions .el-button {
+  flex: 1;
+}
+
+.back-btn {
+  width: 100%;
+}
+
+/* 响应式适配 */
+@media (max-width: 1200px) {
+  .dashboard-main {
+    grid-template-columns: 240px 1fr 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .sidebar-left,
+  .sidebar-right {
+    max-height: 300px;
+  }
+}
 </style>

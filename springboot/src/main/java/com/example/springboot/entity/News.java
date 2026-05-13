@@ -15,8 +15,6 @@ public class News {
 
     private String introduction;
 
-    private String picture;
-
     private String content;
 
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

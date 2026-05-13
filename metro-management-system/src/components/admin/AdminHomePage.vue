@@ -21,7 +21,6 @@
     <el-row :gutter="16" class="content-row">
       <el-col :span="16">
         <div class="map-card">
-          <h3>广州地铁全路网</h3>
           <div id="homeMap" ref="homeMapRef"></div>
         </div>
       </el-col>
@@ -201,7 +200,7 @@ onUnmounted(() => { map?.destroy() })
 .content-row { margin-top: 16px; }
 .map-card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .map-card h3 { margin: 0 0 12px 0; font-size: 15px; }
-#homeMap { width: 100%; height: 400px; border-radius: 4px; }
+#homeMap { width: 100%; height: 550px; border-radius: 4px; }
 .status-card, .notice-card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .status-card h3, .notice-card h3 { margin: 0 0 12px 0; font-size: 15px; }
 .status-list { max-height: 250px; overflow-y: auto; }

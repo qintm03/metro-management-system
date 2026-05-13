@@ -3,7 +3,7 @@
 <mapper namespace="com.example.springboot.mapper.NewsMapper">
 
     <sql id="Base_Column_List">
-        id, title, introduction, picture, content, addtime
+        id, title, introduction, content, addtime
     </sql>
 
     <select id="selectByCondition" resultType="com.example.springboot.entity.News">

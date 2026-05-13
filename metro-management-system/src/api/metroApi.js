@@ -115,6 +115,10 @@ export function updateSchedule(lineId, data) {
     return request.put(`/api/metro/line/${lineId}/schedule`, data)
 }
 
+export function getLineTrains(lineId) {
+    return request.get(`/api/metro/line/${lineId}/trains`)
+}
+
 // ---- 人口数据 ----
 export function getPopulationData(params) {
     return request.get('/api/population', { params })

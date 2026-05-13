@@ -46,10 +46,10 @@ public interface MetroLineMapper {
     // ---- 写操作 ----
 
     @Insert("INSERT INTO metro_line(line_id, line_name, line_code, color, start_station, end_station, " +
-            "first_train_time, last_train_time, `interval`, segment_time, dwell_time, distance, station_count, " +
+            "first_train_time, last_train_time, `interval`, segment_time, dwell_time, train_count, distance, station_count, " +
             "path, status, created_at, updated_at) " +
             "VALUES(#{lineId}, #{lineName}, #{lineCode}, #{color}, #{startStation}, #{endStation}, " +
-            "#{firstTrainTime}, #{lastTrainTime}, #{interval}, #{segmentTime}, #{dwellTime}, #{distance}, #{stationCount}, " +
+            "#{firstTrainTime}, #{lastTrainTime}, #{interval}, #{segmentTime}, #{dwellTime}, #{trainCount}, #{distance}, #{stationCount}, " +
             "#{path}, 1, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(MetroLine line);
@@ -57,7 +57,7 @@ public interface MetroLineMapper {
     @Update("UPDATE metro_line SET line_name=#{lineName}, color=#{color}, start_station=#{startStation}, " +
             "end_station=#{endStation}, first_train_time=#{firstTrainTime}, last_train_time=#{lastTrainTime}, " +
             "`interval`=#{interval}, segment_time=#{segmentTime}, dwell_time=#{dwellTime}, " +
-            "distance=#{distance}, path=#{path}, updated_at=NOW() " +
+            "train_count=#{trainCount}, distance=#{distance}, path=#{path}, updated_at=NOW() " +
             "WHERE id=#{id}")
     int update(MetroLine line);
 

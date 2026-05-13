@@ -10,6 +10,7 @@ E:\毕设\springboot\src\main\java\com\example\springboot\controller\LoginContro
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\MessagesController.java
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\MetroController.java
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\NewsController.java
+E:\毕设\springboot\src\main\java\com\example\springboot\controller\PopulationController.java
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\StoreupController.java
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\UserController.java
 E:\毕设\springboot\src\main\java\com\example\springboot\controller\ZhandianchaxunController.java
@@ -23,6 +24,7 @@ E:\毕设\springboot\src\main\java\com\example\springboot\entity\Discusszhandian
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\Discusszhandianzhoubian.java
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\Messages.java
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\MetroLine.java
+E:\毕设\springboot\src\main\java\com\example\springboot\entity\MetroPopulation.java
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\MetroStation.java
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\MetroTransfer.java
 E:\毕设\springboot\src\main\java\com\example\springboot\entity\News.java
@@ -41,6 +43,7 @@ E:\毕设\springboot\src\main\java\com\example\springboot\mapper\Discusszhandian
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\DiscusszhandianzhoubianMapper.java
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\MessagesMapper.java
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\MetroLineMapper.java
+E:\毕设\springboot\src\main\java\com\example\springboot\mapper\MetroPopulationMapper.java
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\MetroStationMapper.java
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\MetroTransferMapper.java
 E:\毕设\springboot\src\main\java\com\example\springboot\mapper\NewsMapper.java
@@ -54,7 +57,9 @@ E:\毕设\springboot\src\main\java\com\example\springboot\service\ConfigService.
 E:\毕设\springboot\src\main\java\com\example\springboot\service\DiscusschecixianluService.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\DiscusszhandianchaxunService.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\DiscusszhandianzhoubianService.java
+E:\毕设\springboot\src\main\java\com\example\springboot\service\impl\MetroPopulationServiceImpl.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\MessagesService.java
+E:\毕设\springboot\src\main\java\com\example\springboot\service\MetroPopulationService.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\MetroService.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\MetroServiceImpl.java
 E:\毕设\springboot\src\main\java\com\example\springboot\service\NewsService.java

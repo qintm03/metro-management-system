@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,11 +17,14 @@ public class MetroLine {
     private String color;
     private String startStation;
     private String endStation;
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime firstTrainTime;
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime lastTrainTime;
     private Integer interval;
     private Integer segmentTime;
     private Integer dwellTime;
+    private Integer trainCount;
     private BigDecimal distance;
     private Integer stationCount;
     private String path;
@@ -126,6 +130,14 @@ public class MetroLine {
         this.dwellTime = dwellTime;
     }
 
+    public Integer getTrainCount() {
+        return trainCount;
+    }
+
+    public void setTrainCount(Integer trainCount) {
+        this.trainCount = trainCount;
+    }
+
     public BigDecimal getDistance() {
         return distance;
     }
@@ -189,6 +201,7 @@ public class MetroLine {
                 ", interval=" + interval +
                 ", segmentTime=" + segmentTime +
                 ", dwellTime=" + dwellTime +
+                ", trainCount=" + trainCount +
                 ", distance=" + distance +
                 ", stationCount=" + stationCount +
                 ", status=" + status +
